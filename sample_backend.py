@@ -79,11 +79,21 @@ def get_users():
         resp = jsonify(success=True)
         return resp
 
-@app.route('/users/<id>')
+# @app.route('/users/<id>', methods=['DELETE'])
+# def delete_user(id):
+#     if request.method == 'DELETE':
+
+#         userToDelete = request.get_json()
+#         users['users_list'].remove(userToDelete)
+#         resp = jsonify(success=True)
+#         return resp
+
+@app.route('/users/<id>', methods=['DELETE'])
 def get_user(id):
     if id:
-        for user in users['users_list']:
-            if user['id'] == id:
-                return user
-        return ({})
-    return users
+        if request.method == 'DELETE':
+            for user in users['users_list']:
+                if user['id'] == id:
+                    users['users_list'].remove(user)
+                    resp = jsonify(success=True)
+                    return resp
