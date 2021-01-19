@@ -53,7 +53,7 @@ def generate_random_id():
 
     return rand_id
 
-@app.route('/users', methods=['GET', 'POST', 'DELETE'])
+@app.route('/users', methods=['GET', 'POST'])
 def get_users():
     if request.method == 'GET':
         search_username = request.args.get('name')
@@ -71,22 +71,7 @@ def get_users():
         resp = jsonify(success=True)
         #resp.status_code = 200 #optionally, you can always set a response code. 
         # 200 is the default code for a normal response
-        resp.status_code = 201
-        return resp
-    elif request.method == 'DELETE':
-        userToDelete = request.get_json()
-        users['users_list'].remove(userToDelete)
-        resp = jsonify(success=True)
-        return resp
-
-# @app.route('/users/<id>', methods=['DELETE'])
-# def delete_user(id):
-#     if request.method == 'DELETE':
-
-#         userToDelete = request.get_json()
-#         users['users_list'].remove(userToDelete)
-#         resp = jsonify(success=True)
-#         return resp
+        return userToAdd, 201
 
 @app.route('/users/<id>', methods=['DELETE'])
 def get_user(id):
