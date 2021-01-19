@@ -1,3 +1,4 @@
+import random
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -40,6 +41,18 @@ users = {
    ]
 }
 
+def generate_random_id():
+    id_length = 6
+    rand_id = ""
+
+    for _ in range(id_length//2):
+        rand_id = rand_id + chr(random.randint(97, 122))
+
+    for _ in range(id_length//2):
+        rand_id = rand_id + chr(random.randint(48, 57))
+
+    return rand_id
+
 @app.route('/users', methods=['GET', 'POST', 'DELETE'])
 def get_users():
     if request.method == 'GET':
@@ -53,10 +66,12 @@ def get_users():
         return users
     elif request.method == 'POST':
         userToAdd = request.get_json()
+        userToAdd["id"] = generate_random_id()
         users['users_list'].append(userToAdd)
         resp = jsonify(success=True)
         #resp.status_code = 200 #optionally, you can always set a response code. 
         # 200 is the default code for a normal response
+        resp.status_code = 201
         return resp
     elif request.method == 'DELETE':
         userToDelete = request.get_json()
